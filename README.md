@@ -1,4 +1,4 @@
-# Flinder 🧭📋
+# Flinder
 
 **Flinder** keeps track of every flipchart around the resort so you always know
 where to find one — whether it's parked at Horizon Point, Wisteria, the
