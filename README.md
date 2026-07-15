@@ -15,21 +15,47 @@ Auditorium, Telco, the Lab, or Nightcap.
 - **Quick moves** — change a flipchart's location or status right from its card.
 - **Location management** — add, rename, or delete resort locations. Deleting a
   location leaves its flipcharts unassigned rather than losing them.
-- **Shared data** — a small Express server backed by SQLite means everyone who
-  opens the app sees the same live inventory.
+- **Shared data** — an Express API backed by Postgres means everyone who opens
+  the app sees the same live inventory.
 
-## Getting started
+## Running locally
 
-Requires Node.js 22.5+ (uses the built-in `node:sqlite` module).
+Requires Node.js 22 and a Postgres connection string (a free
+[Neon](https://neon.tech) database works great, or any local Postgres).
 
 ```bash
 npm install
+cp .env.example .env   # then paste your DATABASE_URL into .env
 npm start
 ```
 
-Then open <http://localhost:3000>. The database is created at `data/flinder.db`
-on first run and seeded with the six resort locations and a few sample
-flipcharts. Set `PORT` or `FLINDER_DB` to override the defaults.
+Then open <http://localhost:3000>. On first run the schema is created and
+seeded with the six resort locations and a few sample flipcharts.
+
+## Deploying to Vercel with Neon Postgres
+
+1. **Create the database** — sign up at [neon.tech](https://neon.tech), create
+   a project, and copy the **pooled** connection string (in the connect
+   dialog, keep "Connection pooling" on — the host contains `-pooler`).
+   The pooled endpoint matters on Vercel: serverless functions open many
+   short-lived connections, and the pooler absorbs them.
+
+   > Tip: if you install the [Neon integration](https://vercel.com/marketplace/neon)
+   > from the Vercel Marketplace instead, it creates the database and sets
+   > `DATABASE_URL` on the project for you — you can then skip step 3.
+
+2. **Import the repo** — go to [vercel.com/new](https://vercel.com/new) and
+   import this repository. Leave the framework preset as **Other**; no build
+   command is needed. Vercel serves `public/` as the static frontend and wraps
+   `api/index.js` (the Express app) as a serverless function; `vercel.json`
+   routes every `/api/*` request to it.
+
+3. **Set the environment variable** — in the project's **Settings →
+   Environment Variables**, add `DATABASE_URL` with the pooled Neon connection
+   string from step 1.
+
+4. **Deploy** — click Deploy (or just push to the repo; every push deploys).
+   The first request creates and seeds the schema automatically.
 
 ## API
 

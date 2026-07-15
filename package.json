@@ -4,13 +4,14 @@
   "description": "Track and locate flipcharts around the resort",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node --env-file-if-exists=.env server.js"
   },
   "engines": {
-    "node": ">=22.5.0"
+    "node": "22.x"
   },
   "license": "MIT",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
   }
 }
