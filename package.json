@@ -1,0 +1,17 @@
+{
+  "name": "flinder",
+  "version": "1.0.0",
+  "description": "Track and locate flipcharts around the resort",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  }
+}
