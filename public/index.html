@@ -3,12 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flinder — Flipchart Finder</title>
+  <title>Flinder — The AI Flipchart Finder for Luxury Resorts</title>
+  <meta name="theme-color" content="#0f0d0a">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="app-header">
+    <div class="header-aurora" aria-hidden="true">
+      <div class="aurora-blob aurora-a"></div>
+      <div class="aurora-blob aurora-b"></div>
+    </div>
     <div class="app-header-inner">
       <div class="brand">
         <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -22,7 +30,7 @@
         </svg>
         <div>
           <h1>Flinder</h1>
-          <p class="tagline">An AI flipchart finder for luxury resorts.</p>
+          <p class="tagline">The <span class="tagline-accent">AI&nbsp;flipchart&nbsp;finder</span> for luxury resorts</p>
         </div>
       </div>
       <nav class="tabs" role="tablist" aria-label="Sections">

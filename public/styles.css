@@ -1,21 +1,36 @@
 :root {
-  --orange-600: #ea580c;
-  --orange-500: #f97316;
-  --orange-400: #fb923c;
-  --orange-100: #ffedd5;
-  --orange-50: #fff7ed;
-  --ink-900: #1c1917;
-  --ink-600: #57534e;
-  --ink-400: #a8a29e;
-  --line: #f0e7de;
-  --white: #ffffff;
-  --green-600: #16a34a;
-  --green-50: #f0fdf4;
-  --red-600: #dc2626;
-  --red-50: #fef2f2;
-  --radius: 12px;
-  --shadow: 0 1px 2px rgba(28, 25, 23, 0.06), 0 4px 12px rgba(28, 25, 23, 0.05);
-  --shadow-lift: 0 2px 4px rgba(28, 25, 23, 0.08), 0 10px 24px rgba(234, 88, 12, 0.12);
+  color-scheme: dark;
+
+  --bg: #0f0d0a;
+  --bg-raise: #16130f;
+  --surface: #1b1712;
+  --surface-2: #221d16;
+  --line: #2c261d;
+  --line-strong: #3e3526;
+
+  --gold: #d2ab66;
+  --gold-bright: #eed9a6;
+  --gold-deep: #a67f3e;
+  --gold-08: rgba(210, 171, 102, 0.08);
+  --gold-14: rgba(210, 171, 102, 0.14);
+  --gold-28: rgba(210, 171, 102, 0.28);
+  --ink-on-gold: #241b0d;
+
+  --text: #ece4d3;
+  --muted: #a99f8c;
+  --faint: #7c7364;
+
+  --green: #8ad9a6;
+  --green-bg: rgba(74, 189, 122, 0.13);
+  --red: #f0968a;
+  --red-bg: rgba(224, 92, 73, 0.13);
+
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.4), 0 14px 36px rgba(0, 0, 0, 0.45);
 }
 
 * {
@@ -24,10 +39,17 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: var(--orange-50);
-  color: var(--ink-900);
+  font-family: var(--font-sans);
+  background: var(--bg);
+  background-image: radial-gradient(90% 40rem at 50% 0%, #17130e 0%, var(--bg) 100%);
+  background-repeat: no-repeat;
+  color: var(--text);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--gold-28);
 }
 
 button {
@@ -45,73 +67,206 @@ textarea {
 /* ---------- Header ---------- */
 
 .app-header {
-  background: linear-gradient(120deg, var(--orange-500), var(--orange-600));
-  color: var(--white);
-  box-shadow: 0 2px 12px rgba(234, 88, 12, 0.35);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, #1a1610, #12100c);
+  border-bottom: 1px solid var(--line);
+}
+
+/* Animated champagne hairline along the bottom edge */
+.app-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--gold-deep) 32%,
+    var(--gold-bright) 50%,
+    var(--gold-deep) 68%,
+    transparent 100%
+  );
+  background-size: 250% 100%;
+  animation: hairline-sweep 9s linear infinite;
+}
+
+@keyframes hairline-sweep {
+  from {
+    background-position: 125% 0;
+  }
+  to {
+    background-position: -125% 0;
+  }
+}
+
+/* Slow-drifting warm glow behind the header content */
+.header-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.aurora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  opacity: 0.4;
+}
+
+.aurora-a {
+  width: 440px;
+  height: 230px;
+  top: -130px;
+  left: -70px;
+  background: radial-gradient(closest-side, rgba(210, 171, 102, 0.45), transparent);
+  animation: drift-a 22s ease-in-out infinite alternate;
+}
+
+.aurora-b {
+  width: 540px;
+  height: 260px;
+  top: -90px;
+  right: -140px;
+  background: radial-gradient(closest-side, rgba(166, 127, 62, 0.38), transparent);
+  animation: drift-b 27s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  to {
+    transform: translate(170px, 45px) scale(1.15);
+  }
+}
+
+@keyframes drift-b {
+  to {
+    transform: translate(-190px, 35px) scale(0.88);
+  }
 }
 
 .app-header-inner {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 20px 20px 0;
+  padding: 30px 24px;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 18px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding-bottom: 16px;
+  gap: 16px;
+  animation: rise-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .brand-mark {
-  width: 44px;
-  height: 44px;
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.16);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 12px;
+  width: 52px;
+  height: 52px;
+  padding: 11px;
+  color: var(--gold-bright);
+  background: linear-gradient(160deg, var(--gold-14), var(--gold-08));
+  border: 1px solid var(--gold-28);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
 }
 
 .brand h1 {
   margin: 0;
-  font-size: 26px;
-  letter-spacing: 0.3px;
-  line-height: 1.1;
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
 }
 
 .tagline {
-  margin: 2px 0 0;
-  font-size: 13px;
-  opacity: 0.9;
+  margin: 4px 0 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+/* Shimmering emphasis on the product promise */
+.tagline-accent {
+  font-weight: 600;
+  background: linear-gradient(
+    100deg,
+    var(--gold-deep) 0%,
+    var(--gold-bright) 40%,
+    var(--gold) 60%,
+    var(--gold-bright) 80%,
+    var(--gold-deep) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 7s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 120% 0;
+  }
+  50% {
+    background-position: -20% 0;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tabs {
   display: flex;
   gap: 4px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  animation: rise-in 0.7s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .tab {
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--muted);
   font-weight: 600;
-  font-size: 14px;
-  padding: 10px 18px;
-  border-radius: 10px 10px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  border-radius: 999px;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .tab:hover {
-  background: rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .tab.is-active {
-  background: var(--orange-50);
-  color: var(--orange-600);
+  background: var(--gold-14);
+  border-color: var(--gold-28);
+  color: var(--gold-bright);
 }
 
 /* ---------- Layout ---------- */
@@ -119,7 +274,7 @@ textarea {
 .container {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 24px 20px 64px;
+  padding: 28px 24px 72px;
 }
 
 .toolbar {
@@ -136,33 +291,40 @@ textarea {
 
 .search-icon {
   position: absolute;
-  left: 12px;
+  left: 13px;
   top: 50%;
   transform: translateY(-50%);
   width: 16px;
   height: 16px;
-  color: var(--ink-400);
+  color: var(--faint);
   pointer-events: none;
-}
-
-.search-wrap input {
-  width: 100%;
-  padding: 10px 12px 10px 36px;
 }
 
 .toolbar input,
 .toolbar select {
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 10px 12px;
+  padding: 11px 13px;
   box-shadow: var(--shadow);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* After the generic toolbar rule so the icon inset wins */
+.search-wrap input {
+  width: 100%;
+  padding: 11px 12px 11px 38px;
+}
+
+.toolbar input::placeholder {
+  color: var(--faint);
 }
 
 .toolbar input:focus,
 .toolbar select:focus {
-  outline: 2px solid var(--orange-400);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-14);
 }
 
 #add-location-form input {
@@ -175,15 +337,15 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  border: 1px solid var(--line);
-  background: var(--white);
-  color: var(--ink-900);
+  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
+  color: var(--text);
   font-weight: 600;
   font-size: 14px;
-  padding: 10px 16px;
+  padding: 11px 17px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  transition: transform 0.06s ease, box-shadow 0.15s ease;
+  transition: transform 0.1s ease, box-shadow 0.25s ease, border-color 0.25s ease, filter 0.25s ease;
 }
 
 .btn svg {
@@ -192,6 +354,7 @@ textarea {
 }
 
 .btn:hover {
+  border-color: var(--gold-28);
   box-shadow: var(--shadow-lift);
 }
 
@@ -200,9 +363,15 @@ textarea {
 }
 
 .btn-primary {
-  background: linear-gradient(120deg, var(--orange-500), var(--orange-600));
+  background: linear-gradient(135deg, #ecd39f, #c89a52);
   border-color: transparent;
-  color: var(--white);
+  color: var(--ink-on-gold);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 6px 22px rgba(210, 171, 102, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 /* ---------- Status filter chips ---------- */
@@ -211,31 +380,33 @@ textarea {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .chip {
   border: 1px solid var(--line);
-  background: var(--white);
+  background: var(--surface);
   border-radius: 999px;
-  padding: 7px 14px;
+  padding: 8px 15px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--ink-600);
+  color: var(--muted);
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .chip:hover {
-  border-color: var(--orange-400);
+  border-color: var(--gold-28);
+  color: var(--text);
 }
 
 .chip.is-active {
-  background: var(--orange-600);
-  border-color: var(--orange-600);
-  color: var(--white);
+  background: linear-gradient(135deg, #ecd39f, #c89a52);
+  border-color: transparent;
+  color: var(--ink-on-gold);
 }
 
 .chip-count {
-  opacity: 0.7;
+  opacity: 0.75;
   font-weight: 500;
 }
 
@@ -248,14 +419,21 @@ textarea {
 }
 
 .card {
-  background: var(--white);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  border-color: var(--gold-28);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
 }
 
 .card-top {
@@ -267,8 +445,11 @@ textarea {
 
 .card-name {
   margin: 0;
-  font-size: 17px;
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
 }
 
 .card-actions {
@@ -279,10 +460,11 @@ textarea {
 .icon-btn {
   border: none;
   background: transparent;
-  color: var(--ink-400);
+  color: var(--faint);
   padding: 5px;
   border-radius: 8px;
   display: inline-flex;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .icon-btn svg {
@@ -291,33 +473,33 @@ textarea {
 }
 
 .icon-btn:hover {
-  background: var(--orange-100);
-  color: var(--orange-600);
+  background: var(--gold-14);
+  color: var(--gold-bright);
 }
 
 .icon-btn.danger:hover {
-  background: var(--red-50);
-  color: var(--red-600);
+  background: var(--red-bg);
+  color: var(--red);
 }
 
 .card-location {
   display: flex;
   align-items: center;
   gap: 7px;
-  color: var(--ink-600);
+  color: var(--muted);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .card-location svg {
   width: 15px;
   height: 15px;
-  color: var(--orange-500);
+  color: var(--gold);
   flex-shrink: 0;
 }
 
 .card-location.unassigned {
-  color: var(--ink-400);
+  color: var(--faint);
   font-style: italic;
 }
 
@@ -327,9 +509,10 @@ textarea {
   gap: 6px;
   align-self: flex-start;
   border-radius: 999px;
-  padding: 4px 11px;
+  padding: 4px 12px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .badge::before {
@@ -341,27 +524,28 @@ textarea {
 }
 
 .badge.available {
-  background: var(--green-50);
-  color: var(--green-600);
+  background: var(--green-bg);
+  color: var(--green);
 }
 
 .badge.in-use {
-  background: var(--orange-100);
-  color: var(--orange-600);
+  background: var(--gold-14);
+  color: var(--gold);
 }
 
 .badge.needs-supplies {
-  background: var(--red-50);
-  color: var(--red-600);
+  background: var(--red-bg);
+  color: var(--red);
 }
 
 .card-notes {
   margin: 0;
   font-size: 13px;
-  color: var(--ink-600);
-  background: var(--orange-50);
-  border-radius: 8px;
-  padding: 8px 10px;
+  color: var(--muted);
+  background: var(--bg-raise);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 8px 11px;
 }
 
 .card-controls {
@@ -377,29 +561,31 @@ textarea {
   flex-direction: column;
   gap: 4px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ink-400);
+  letter-spacing: 0.07em;
+  color: var(--faint);
 }
 
 .card-controls select {
-  border: 1px solid var(--line);
-  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
   padding: 7px 8px;
-  background: var(--white);
+  background: var(--surface-2);
   font-size: 13px;
   width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card-controls select:focus {
-  outline: 2px solid var(--orange-400);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-14);
 }
 
 .card-updated {
   font-size: 12px;
-  color: var(--ink-400);
+  color: var(--faint);
 }
 
 /* ---------- Locations view ---------- */
@@ -411,35 +597,44 @@ textarea {
 }
 
 .location-row {
-  background: var(--white);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 14px 16px;
+  padding: 15px 17px;
   display: flex;
   align-items: center;
   gap: 12px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.location-row:hover {
+  border-color: var(--gold-28);
+  box-shadow: var(--shadow-lift);
 }
 
 .location-row svg {
   width: 18px;
   height: 18px;
-  color: var(--orange-500);
+  color: var(--gold);
   flex-shrink: 0;
 }
 
 .location-name {
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   flex: 1;
 }
 
 .location-count {
   font-size: 13px;
-  color: var(--ink-600);
-  background: var(--orange-50);
-  border: 1px solid var(--orange-100);
+  color: var(--gold);
+  background: var(--gold-08);
+  border: 1px solid var(--gold-14);
   border-radius: 999px;
-  padding: 3px 11px;
+  padding: 3px 12px;
   white-space: nowrap;
 }
 
@@ -447,38 +642,48 @@ textarea {
 
 .empty-state {
   text-align: center;
-  padding: 56px 20px;
-  color: var(--ink-400);
+  padding: 64px 20px;
+  color: var(--faint);
 }
 
 .empty-state svg {
   width: 52px;
   height: 52px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  color: var(--gold-deep);
+  opacity: 0.7;
 }
 
 .empty-state p {
   margin: 0;
-  font-size: 15px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
 }
 
 /* ---------- Dialog ---------- */
 
 dialog {
-  border: none;
-  border-radius: 16px;
-  box-shadow: 0 24px 64px rgba(28, 25, 23, 0.25);
-  padding: 24px;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  background: var(--surface-2);
+  color: var(--text);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.65);
+  padding: 26px;
   width: min(420px, calc(100vw - 40px));
 }
 
 dialog::backdrop {
-  background: rgba(28, 25, 23, 0.45);
+  background: rgba(8, 6, 4, 0.6);
+  backdrop-filter: blur(5px);
 }
 
 dialog h2 {
   margin: 0 0 18px;
-  font-size: 19px;
+  font-family: var(--font-serif);
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 dialog form {
@@ -491,25 +696,38 @@ dialog label {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--ink-600);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
 }
 
 dialog input,
 dialog select,
 dialog textarea {
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: 10px;
-  padding: 9px 11px;
-  background: var(--white);
+  padding: 10px 12px;
+  background: var(--bg-raise);
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+dialog input::placeholder,
+dialog textarea::placeholder {
+  color: var(--faint);
 }
 
 dialog input:focus,
 dialog select:focus,
 dialog textarea:focus {
-  outline: 2px solid var(--orange-400);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-14);
 }
 
 dialog textarea {
@@ -537,23 +755,26 @@ dialog textarea {
 }
 
 .toast {
-  background: var(--ink-900);
-  color: var(--white);
-  border-radius: 10px;
+  background: #262019;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--gold);
+  border-radius: 11px;
   padding: 11px 18px;
   font-size: 14px;
   box-shadow: var(--shadow-lift);
-  animation: toast-in 0.2s ease;
+  animation: toast-in 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .toast.error {
-  background: var(--red-600);
+  border-left-color: var(--red);
+  color: var(--red);
 }
 
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -561,13 +782,34 @@ dialog textarea {
   }
 }
 
+/* ---------- Motion preferences ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .app-header::after,
+  .aurora-blob,
+  .tagline-accent,
+  .brand,
+  .tabs,
+  .toast {
+    animation: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
+
 @media (max-width: 560px) {
   .app-header-inner {
-    padding-top: 16px;
+    padding: 22px 20px;
   }
 
   .brand h1 {
-    font-size: 22px;
+    font-size: 28px;
+  }
+
+  .tagline {
+    font-size: 15px;
   }
 
   .card-controls {
